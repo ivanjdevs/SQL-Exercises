@@ -1,2 +1,2 @@
 # SQL-Exercises
-This repository contains a number of SQL exercises of all kinds and at all levels.
+This repository contains some SQL exercises of all levels. It's focused on data analysis exercises using SQL.
