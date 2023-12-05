@@ -5,7 +5,7 @@ departamentos de una empresa y sus cargos. El ejercicio ha sido realizado en Pos
 
 Los archivos csv originales no tenían headers, así que en PostgreSQL se les ha asignado los siguientes encabezados:
 
-hired_employees (esta tabla contiene 1999 registros. Se presentan acá los 10 primeros porque ajá, pa que mostrar ese larguero de tabla):
+hired_employees (esta tabla contiene 1999 registros. Se presentan acá los 20 primeros porque ajá, pa que mostrar ese larguero de tabla):
 
 ![image](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/0f2e0cb6-d210-4428-a1b0-0a0fa2b2243c)
 
@@ -14,7 +14,7 @@ departments:
 
 ![image](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/1aba4ac7-26e8-42b4-9e6a-91166480f9a1)
 
-jobs (esta tabla contiene 183 registros. Se presentan acá los 10 primeros):
+jobs (esta tabla contiene 183 registros. Se presentan acá los 20 primeros):
 
 ![image](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/a8b9cc73-17fe-40c2-b98e-344032806e3a)
 
