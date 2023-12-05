@@ -1,16 +1,21 @@
 ## ¿Qué es esto?
 
-Este es un ejericio en SQL donde se realizan 5 consultas sobre una pequeña base de datos dividida en tres archivos CSV que contienen información sobre empleados contratados en ciertos
+Este es un ejercicio en SQL donde se realizan 5 consultas sobre una pequeña base de datos dividida en tres archivos CSV que contienen información sobre empleados contratados en ciertos
 departamentos de una empresa y sus cargos. El ejercicio ha sido realizado en PostgreSQL. 
 
-Los archivos csv originales no tenían headers, así que en PostgreSQL se les ha asignado los siguientes a cada archivo csv:
+Los archivos csv originales no tenían headers, así que en PostgreSQL se les ha asignado los siguientes encabezados:
 
 hired_employees:
 
 ![image](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/b52dbe5e-3935-4240-85d7-b3c1857f3846)
 
+departments:
 
+![image](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/1aba4ac7-26e8-42b4-9e6a-91166480f9a1)
 
+jobs:
+
+![image](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/1643b119-5d75-4c83-a969-c186f98bc77c)
 
 
 Primero, necesitaremos saber como extraer caracteres de una columna. Como la columna datetime es tipo texto, no podemos usar la funcion date_part o extract. Una opción es usar substring:
@@ -23,8 +28,9 @@ limit 10;
 
 ![image](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/2f86358d-ace0-411a-ab57-6c6ec6ebbeff)
 
+Empecemos con las consultas:
 
-### 1) Cantidad de empleados contratados por departamento en 2021.
+### 1) ¿Cantidad de empleados contratados por departamento en 2021?
 
 ```sql
 select d.department, count(*)
@@ -82,7 +88,7 @@ group by d.department;
 de empleados contratados en todo 2021 para todos los departamentos. Ordene el resultado por el número de empleados contratados
 en orden descendente.  </h3>
 
-_Primero, promedio de empleados contratados._
+Primero, promedio de empleados contratados.
 
 ```sql
 select count(*)/count (distinct dep_id) as avg_hired
@@ -90,10 +96,10 @@ from public.employees
 where (select substring(datetime, 1,4))='2021';
 ```
 
-_Listo. Armar la querie completa. La subquerie de mas abajo es la misma que acabamos de hacer anteriormente..
+Listo. Armar la querie completa. La subquerie de mas abajo es la misma que acabamos de hacer anteriormente.
 En la subquerie de mas arriba (select d.id, d.department, count(*)...) se halla el número de empleados contratados en cada
 departamento. Y en la querie general, se seleccionan los campos que se desean (id, department, hired), colocando 
-la condición where según lo que se requiere, en este caso, que la cantidad de empleados sea mayor al promedio general._
+la condición where según lo que se requiere, en este caso, que la cantidad de empleados sea mayor al promedio general.
 
 
 ```sql
