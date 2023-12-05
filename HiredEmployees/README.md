@@ -1,11 +1,11 @@
-## ¿Qué es esto?
+## ¿De que va este ejercicio?
 
-Este es un ejercicio en SQL donde se realizan 5 consultas sobre una pequeña base de datos dividida en tres archivos CSV que contienen información sobre empleados contratados en ciertos
+Este es un ejercicio en SQL donde se realizan 5 consultas sobre una pequeña base de datos que se encuentra distribuida en tres archivos CSV que contienen información sobre empleados contratados en ciertos
 departamentos de una empresa y sus cargos. El ejercicio ha sido realizado en PostgreSQL. 
 
 Los archivos csv originales no tenían headers, así que en PostgreSQL se les ha asignado los siguientes encabezados:
 
-hired_employees (esta tabla contiene 1999 registros. Se presnetan acá los 10 primeros porque ajá, pa que mostrar ese larguero de tabla):
+hired_employees (esta tabla contiene 1999 registros. Se presentan acá los 10 primeros porque ajá, pa que mostrar ese larguero de tabla):
 
 ![image](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/0f2e0cb6-d210-4428-a1b0-0a0fa2b2243c)
 
@@ -14,7 +14,7 @@ departments:
 
 ![image](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/1aba4ac7-26e8-42b4-9e6a-91166480f9a1)
 
-jobs (esta tabla contiene 183 registros. Se presentan acá los 10 primeros porque ajá....):
+jobs (esta tabla contiene 183 registros. Se presentan acá los 10 primeros):
 
 ![image](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/a8b9cc73-17fe-40c2-b98e-344032806e3a)
 
@@ -85,11 +85,10 @@ group by d.department;
 ![4  Number of employees hired by dept by quarter](https://github.com/ivanjdevs/SQL-Exercises/assets/68659886/a2ea08db-5943-46f3-82d3-7550b7a806c5)
 
 
-<h3> 5) Listar el id, nombre y número de empleados contratados en cada departamento que contrató mas empleados que el promedio
-de empleados contratados en todo 2021 para todos los departamentos. Ordene el resultado por el número de empleados contratados
-en orden descendente.  </h3>
+<h3> 5) Listar el id, nombre y número de empleados contratados de los departamentos que contrataron más empleados que el promedio
+de empleados contratados en todo 2021. Ordene el resultado por el número de empleados contratados en orden descendente.  </h3>
 
-Primero, promedio de empleados contratados.
+Primero, promedio de empleados contratados en 2021.
 
 ```sql
 select count(*)/count (distinct dep_id) as avg_hired
@@ -99,7 +98,7 @@ where (select substring(datetime, 1,4))='2021';
 
 Listo. Armar la querie completa. La subquerie de mas abajo es la misma que acabamos de hacer anteriormente.
 En la subquerie de mas arriba (select d.id, d.department, count(*)...) se halla el número de empleados contratados en cada
-departamento. Y en la querie general, se seleccionan los campos que se desean (id, department, hired), colocando 
+departamento en 2021. Y en la querie general, se seleccionan los campos que se desean (id, department, hired), colocando 
 la condición where según lo que se requiere, en este caso, que la cantidad de empleados sea mayor al promedio general.
 
 
