@@ -353,5 +353,188 @@ Output:
 | 2          | 1.456           |
 
 
+**Question 12 Employee bonus.** Write a solution to report the name and bonus amount of each employee with a bonus less than 1000.
+
+Employee table:
+| empId | name   | supervisor | salary |
+|-------|--------|------------|--------|
+| 3     | Brad   | null       | 4000   |
+| 1     | John   | 3          | 1000   |
+| 2     | Dan    | 3          | 2000   |
+| 4     | Thomas | 3          | 4000   |
+
+Bonus table:
+| empId | bonus |
+|-------|-------|
+| 2     | 500   |
+| 4     | 2000  |
+
+
+Solution:
+```sql
+SELECT E.name, B.bonus 
+FROM Employee E
+LEFT JOIN Bonus B
+ON E.empId = B.empId 
+WHERE (B.bonus < 1000 OR B.bonus IS NULL)
+```
+
+Output: 
+| name | bonus |
+|------|-------|
+| Brad | null  |
+| John | null  |
+| Dan  | 500   |
+
+
+**Question 13. Students and examinations.** Write a solution to find the number of times each student attended each exam. Return the result table ordered by student_id and subject_name.
+
+Students table:
+| student_id | student_name |
+|------------|--------------|
+| 1          | Alice        |
+| 2          | Bob          |
+| 13         | John         |
+| 6          | Alex         |
+
+Subjects table:
+| subject_name |
+|--------------|
+| Math         |
+| Physics      |
+| Programming  |
+
+Examinations table:
+| student_id | subject_name |
+|------------|--------------|
+| 1          | Math         |
+| 1          | Physics      |
+| 1          | Programming  |
+| 2          | Programming  |
+| 1          | Physics      |
+| 1          | Math         |
+| 13         | Math         |
+| 13         | Programming  |
+| 13         | Physics      |
+| 2          | Math         |
+| 1          | Math         |
+
+Solution:
+```sql
+select s.student_id, student_name, su.subject_name, count(e.subject_name) as attended_exams 
+from Students s 
+join Subjects su 
+left join Examinations e 
+on s.student_id = e.student_id and su.subject_name = e.subject_name 
+group by s.student_id, su.subject_name 
+order by s.student_id
+```
+
+Output: 
+| student_id | student_name | subject_name | attended_exams |
+|------------|--------------|--------------|----------------|
+| 1          | Alice        | Math         | 3              |
+| 1          | Alice        | Physics      | 2              |
+| 1          | Alice        | Programming  | 1              |
+| 2          | Bob          | Math         | 1              |
+| 2          | Bob          | Physics      | 0              |
+| 2          | Bob          | Programming  | 1              |
+| 6          | Alex         | Math         | 0              |
+| 6          | Alex         | Physics      | 0              |
+| 6          | Alex         | Programming  | 0              |
+| 13         | John         | Math         | 1              |
+| 13         | John         | Physics      | 1              |
+| 13         | John         | Programming  | 1              |
+
+
+**Question 14. Managers with at least 5 direct reports.** Write a solution to find managers with at least five direct reports. Return the result table in any order. 
+
+Employee table:
+
+| id  | name  | department | managerId |
+|-----|-------|------------|-----------|
+| 101 | John  | A          | null      |
+| 102 | Dan   | A          | 101       |
+| 103 | James | A          | 101       |
+| 104 | Amy   | A          | 101       |
+| 105 | Anne  | A          | 101       |
+| 106 | Ron   | B          | 101       |
+
+Solution 1:
+```sql
+WITH aux AS (
+SELECT managerId, COUNT (managerId) FROM Employee
+group by managerId
+having COUNT (managerId)>=5
+)
+select name from Employee
+where id in (select managerId from aux)
+```
+
+Solution 2:
+```sql
+SELECT e1.name
+FROM employee e1
+LEFT JOIN employee e2 ON e1.id=e2.managerId
+GROUP BY e1.id
+HAVING COUNT (e2.name) >= 5
+```
+
+Output: 
+| name |
+|------|
+| John |
+
+
+
+**Question 15. Confirmation rate.** Write a solution to find the confirmation rate of each user. Return the result table in any order.
+
+The confirmation rate of a user is the number of 'confirmed' messages divided by the total number of requested confirmation messages. The confirmation rate of a user that did not request any confirmation messages is 0. Round the confirmation rate to two decimal places.
+
+
+Signups table:
+| user_id | time_stamp          |
+|---------|---------------------|
+| 3       | 2020-03-21 10:16:13 |
+| 7       | 2020-01-04 13:57:59 |
+| 2       | 2020-07-29 23:09:44 |
+| 6       | 2020-12-09 10:39:37 |
+
+Confirmations table:
+| user_id | time_stamp          | action    |
+|---------|---------------------|-----------|
+| 3       | 2021-01-06 03:30:46 | timeout   |
+| 3       | 2021-07-14 14:00:00 | timeout   |
+| 7       | 2021-06-12 11:57:29 | confirmed |
+| 7       | 2021-06-13 12:58:28 | confirmed |
+| 7       | 2021-06-14 13:59:27 | confirmed |
+| 2       | 2021-01-22 00:00:00 | confirmed |
+| 2       | 2021-02-28 23:59:59 | timeout   |
+
+Solution:
+```sql
+select s.user_id, avg(if(c.action="confirmed",1,0)) as confirmation_rate
+from Signups as s 
+left join Confirmations as c on s.user_id= c.user_id 
+group by user_id;
+```
+
+Output: 
+| user_id | confirmation_rate |
+|---------|-------------------|
+| 6       | 0.00              |
+| 3       | 0.00              |
+| 7       | 1.00              |
+| 2       | 0.50              |
+
+
+Explanation: 
+- User 6 did not request any confirmation messages. The confirmation rate is 0.
+- User 3 made 2 requests and both timed out. The confirmation rate is 0.
+- User 7 made 3 requests and all were confirmed. The confirmation rate is 1.
+- User 2 made 2 requests where one was confirmed and the other timed out. The confirmation rate is 1 / 2 = 0.5.
+
+
+
 
 
