@@ -2,7 +2,8 @@
 
 This file contains fifteen solved SQL exercises focusing mainly on SELECT statements and JOINS. Most of the SQL code was executed in MySQL. 
 
-**Question 1. Recyclable and low-fat products.** Write a solution to find the ids of products that are both low fat and recyclable.
+***
+**Question 1. Recyclable and low-fat products.** Write a solution to find the ids of products that are both low fat and recyclable. 
 
 Products table:
 
@@ -31,6 +32,7 @@ Output:
 | 1           |
 | 3           |
 
+***
 **Question 2. Find customer referee.** Find the names of the customer that are not referred by the customer with id = 2. Return the result table in any order.
 
 Customer table:
@@ -57,6 +59,7 @@ Output:
 | Bill |
 | Zack |
 
+***
 **Question 3. Big countries.** Write a solution to find the name, population, and area of the big countries. Return the result table in any order.
 
 A country is big if:
@@ -84,7 +87,7 @@ Output:
 | Afghanistan | 25500100   | 652230  |
 | Algeria     | 37100000   | 2381741 |
 
-
+***
 **Question 4. Combine two tables** Write a solution to report the first name, last name, city, and state of each person in the Person table. If the address of a personId is not present in the Address table,
 report null instead.
 
@@ -112,6 +115,7 @@ Output:
 | Allen     | Wang     | Null          | Null     |
 | Bob       | Alice    | New York City | New York |
 
+***
 **Question 5. Articles views I.** Write a solution to find all the authors that viewed at least one of their own articles.
 
 Views table:
@@ -138,6 +142,7 @@ Output:
 | 4    |
 | 7    |
 
+***
 **Question 6. Invalid Tweets.** Write a solution to find the IDs of the invalid tweets. The tweet is invalid if the number of characters used in the content of the tweet is strictly greater than 15.
 
 Tweets table:
@@ -159,6 +164,7 @@ Output:
 |----------|
 | 2        |
 
+***
 ### Basic Joins
 **Question 7. Replace employee ID with the unique identifier.** Write a solution to show the unique ID of each user. If a user does not have a unique ID replace just show null. Return the result table in any order.
 
@@ -193,6 +199,7 @@ Output:
 | 3         | Winston  |
 | 1         | Jonathan |
 
+***
 **Question 8. Product Sales Analysis I.** Write a solution to report the product_name, year, and price for each sale_id in the Sales table. Return the resulting table in any order.
 
 Sales table:
@@ -226,8 +233,8 @@ Output:
 | Apple        | 2011  | 9000  |
 
 
+***
 **Question 9. Customer Who Visited but Did Not Make Any Transactions.** Write a solution to find the IDs of the users who visited without making any transactions and the number of times they made these types of visits. Return the result table sorted in any order. 
-
 
 Visits
 
@@ -268,6 +275,7 @@ Output:
 | 96          | 1              |
 
 
+***
 **Question 10. Rising temperature.** Write a solution to find all dates' Id with higher temperatures compared to its previous dates (yesterday). Return the result table in any order.
 
 Weather table:
@@ -299,6 +307,7 @@ Explanation:
 - In 2015-01-02, the temperature was higher than the previous day (10 -> 25).
 - In 2015-01-04, the temperature was higher than the previous day (20 -> 30).
 
+***
 **Question 11. Average time of process per machine.** There is a factory website that has several machines each running the same number of processes. Write a solution to find the average time each machine takes to complete a process.
 
 The time to complete a process is the 'end' timestamp minus the 'start' timestamp. The average time is calculated by the total time to complete every process on the machine divided by the number of processes that were run.
@@ -353,6 +362,7 @@ Output:
 | 2          | 1.456           |
 
 
+***
 **Question 12 Employee bonus.** Write a solution to report the name and bonus amount of each employee with a bonus less than 1000.
 
 Employee table:
@@ -386,7 +396,7 @@ Output:
 | John | null  |
 | Dan  | 500   |
 
-
+***
 **Question 13. Students and examinations.** Write a solution to find the number of times each student attended each exam. Return the result table ordered by student_id and subject_name.
 
 Students table:
@@ -447,6 +457,7 @@ Output:
 | 13         | John         | Programming  | 1              |
 
 
+***
 **Question 14. Managers with at least 5 direct reports.** Write a solution to find managers with at least five direct reports. Return the result table in any order. 
 
 Employee table:
@@ -486,7 +497,7 @@ Output:
 | John |
 
 
-
+***
 **Question 15. Confirmation rate.** Write a solution to find the confirmation rate of each user. Return the result table in any order.
 
 The confirmation rate of a user is the number of 'confirmed' messages divided by the total number of requested confirmation messages. The confirmation rate of a user that did not request any confirmation messages is 0. Round the confirmation rate to two decimal places.
