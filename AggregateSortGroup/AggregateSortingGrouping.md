@@ -447,4 +447,193 @@ Output:
 | 2019-07-20 | 2            |
 | 2019-07-21 | 2            |
  
-Explanation: Note that we do not care about days with zero active users.
+
+***
+**Question 26. Product Sales Analysis III.** Write a solution to select the product id, year, quantity, and price for the first year of every product sold. Return the resulting table in any order.
+
+Input: 
+Sales table:
+| sale_id | product_id | year | quantity | price |
+|---------|------------|------|----------|-------| 
+| 1       | 100        | 2008 | 10       | 5000  |
+| 2       | 100        | 2009 | 12       | 5000  |
+| 7       | 200        | 2011 | 15       | 9000  |
+
+- (sale_id, year) is the primary key (combination of columns with unique values) of this table.
+- product_id is a foreign key (reference column) to Product table.
+- Each row of this table shows a sale on the product product_id in a certain year.
+- Note that the price is per unit.
+
+Product table:
+| product_id | product_name |
+|------------|--------------|
+| 100        | Nokia        |
+| 200        | Apple        |
+| 300        | Samsung      |
+
+- product_id is the primary key (column with unique values) of this table.
+- Each row of this table indicates the product name of each product.
+
+Solution 1:
+```sql
+WITH TAUX AS(
+SELECT *, RANK() OVER(PARTITION BY product_id ORDER BY year ASC) as ordenala
+FROM Sales)
+SELECT product_id, year as first_year, quantity, price
+FROM TAUX 
+WHERE ordenala=1;
+```
+
+Solution 2:
+```sql
+SELECT product_id, year as first_year, quantity, price
+FROM Sales
+WHERE (product_id, year) in (
+SELECT product_id, min(year) FROM Sales
+GROUP BY product_id);
+```
+
+Output: 
+| product_id | first_year | quantity | price |
+|------------|------------|----------|-------| 
+| 100        | 2008       | 10       | 5000  |
+| 200        | 2011       | 15       | 9000  |
+
+***
+**Question 27. Classes more than 5 students.** Write a solution to find all the classes that have at least five students. Return the result table in any order.
+
+Courses table:
+
+| student | class    |
+|---------|----------|
+| A       | Math     |
+| B       | English  |
+| C       | Math     |
+| D       | Biology  |
+| E       | Math     |
+| F       | Computer |
+| G       | Math     |
+| H       | Math     |
+| I       | Math     |
+
+```sql
+Solution 1
+SELECT class FROM Courses
+GROUP BY class
+HAVING count(class)>=5;
+```
+
+Solution 2
+```sql
+SELECT class FROM Courses
+GROUP BY class
+HAVING count(student)>=5;
+```
+
+Output: 
+| class   |
+|---------|
+| Math    |
+
+***
+**Question 28. Find follower count.** Write a solution that will, for each user, return the number of followers. Return the result table ordered by user_id in ascending order.
+
+Followers table:
+| user_id | follower_id |
+|---------|-------------|
+| 0       | 1           |
+| 1       | 0           |
+| 2       | 0           |
+| 2       | 1           |
+
+
+Solution
+```sql
+select user_id, count(user_id) as followers_count from Followers
+group by user_id
+order by user_id asc;
+```
+
+Output: 
+| user_id | followers_count|
+|---------|----------------|
+| 0       | 1              |
+| 1       | 1              |
+| 2       | 2              |
+
+Explanation: 
+- The followers of 0 are {1}
+- The followers of 1 are {0}
+- The followers of 2 are {0,1}
+
+***
+**Question 29. Biggest single number.** Find the largest single number. If there is no single number, report null. The result format is in the following example.
+ 
+MyNumbers table:
+| num |
+|-----|
+| 8   |
+| 8   |
+| 3   |
+| 3   |
+| 1   |
+| 4   |
+| 5   |
+| 6   |
+
+This table may contain duplicates (In other words, there is no primary key for this table in SQL). Each row of this table contains an integer. A single number is a number that appeared only once in the MyNumbers table. 
+
+Solution:
+```sql
+select max(num) as num from (
+select num, count(*) as cantidad from MyNumbers 
+group by num
+having cantidad =1)
+as aux;
+```
+Output: 
+| num |
+|-----|
+| 6   |
+
+***
+**Question 30. Customers who bought all products.** Write a solution to report the customer ids from the Customer table that bought all the products in the Product table. Return the result in any order. 
+
+Customer table:
+| customer_id | product_key |
+|-------------|-------------|
+| 1           | 5           |
+| 2           | 6           |
+| 3           | 5           |
+| 3           | 6           |
+| 1           | 6           |
+
+- This table may contain duplicates rows. 
+- customer_id is not NULL.
+- product_key is a foreign key (reference column) to Product table.
+
+
+Product table:
+| product_key |
+|-------------|
+| 5           |
+| 6           |
+
+- product_key is the primary key (column with unique values) for this table.
+
+Solution:
+```sql
+select customer_id from customer 
+group by customer_id
+having count(distinct product_key) = (select count(*) from product)
+```
+
+Output: 
+| customer_id |
+|-------------|
+| 1           |
+| 3           |
+
+Explanation: 
+The customers who bought all the products (5 and 6) are customers with IDs 1 and 3.
+
