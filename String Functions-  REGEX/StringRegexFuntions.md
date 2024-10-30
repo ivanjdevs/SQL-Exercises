@@ -5,7 +5,6 @@ This file contains a some SQL exercises focusing mainly on string functions. Mos
 ***
 **Question 38. Fix names in a table.** Write a solution to fix the names so that only the first character is uppercase and the rest are lowercase. Return the result table ordered by user_id.
 
-Input: 
 Users table:
 
 | user_id | name  |
@@ -13,13 +12,12 @@ Users table:
 | 1       | aLice |
 | 2       | bOB   |
 
-
+Solution:
 ```sql
 select user_id, CONCAT(UPPER(SUBSTRING(name, 1, 1)), LOWER(SUBSTRING(name, 2))) as name
 from Users
 order by user_id;
 ```
-
 
 Explanation of the string functions:
 
@@ -30,9 +28,7 @@ Explanation of the string functions:
   - To get the remaining string we can use SUBSTR(name,2). Length is not required here.
 - CONCAT(A,B) where we concat two strings A+B
 
-
 Output: 
-
 | user_id | name  |
 |---------|-------|
 | 1       | Alice |
@@ -41,7 +37,6 @@ Output:
 ***
 **Question 39. Patients with a condition.** Write a solution to find the patient_id, patient_name and conditions of the patients who have Type I Diabetes. Type I Diabetes always starts with DIAB1 prefix.
 
-Input: 
 Patients table:
 | patient_id | patient_name | conditions   |
 |------------|--------------|--------------|
@@ -52,7 +47,7 @@ Patients table:
 | 5          | Alain        | DIAB201      |
 
 
-Solution 1:
+Solution:
 ```sql
 select patient_id, patient_name, conditions from patients
 where conditions like 'DIAB1%' or conditions like '% DIAB1%'
@@ -69,24 +64,151 @@ Output:
 ***
 **Question 40. Delete duplicate emails.** Write a solution to delete all duplicate emails, keeping only one unique email with the smallest id. Note that you are supposed to  write a DELETE statement and not a SELECT one. 
 
-
-Input: 
 Person table:
-+----+------------------+
+
 | id | email            |
-+----+------------------+
+|----|------------------|
 | 1  | john@example.com |
 | 2  | bob@example.com  |
 | 3  | john@example.com |
-+----+------------------+
+
+
+Solution:
+```sql
+DELETE FROM Person 
+WHERE id IN (
+    SELECT a.id
+    FROM (
+        SELECT id, email,
+               ROW_NUMBER() OVER (PARTITION BY email ORDER BY id) AS rn
+        FROM Person
+    ) a
+    WHERE a.rn > 1
+);
+```
 
 Output: 
 | id | email            |
-+----+------------------+
+|----|------------------|
 | 1  | john@example.com |
 | 2  | bob@example.com  |
-+----+------------------+
+
 Explanation: john@example.com is repeated two times. We keep the row with the smallest Id = 1.
+
+
+***
+**Question 41. Second highest salaries.** Write a solution to find the second highest distinct salary from the employee table. If there is no second highest salary, return null.
+
+Employee table:
+
+| id | salary |
+|----|--------|
+| 1  | 100    |
+| 2  | 200    |
+| 3  | 300    |
+
+Solution:
+```sql
+select (
+select distinct Salary
+from Employee order by salary desc 
+limit 1 offset 1)
+as SecondHighestSalary;
+```
+Output: 
+| SecondHighestSalary |
+|---------------------|
+| 200                 |
+
+Example 2:
+ 
+Employee table:
+
+| id | salary |
+|----|--------|
+| 1  | 100    |
+
+Output: 
+
+| SecondHighestSalary |
+|---------------------|
+| null                |
+
+***
+**Question 42. Group sold products by date.** Write a solution to find for each date the number of different products sold and their names. The sold products names for each date should be sorted lexicographically. Return the result table ordered by sell_date.
+ 
+Activities table:
+
+| sell_date  | product    |
+|------------|------------|
+| 2020-05-30 | Headphone  |
+| 2020-06-01 | Pencil     |
+| 2020-06-02 | Mask       |
+| 2020-05-30 | Basketball |
+| 2020-06-01 | Bible      |
+| 2020-06-02 | Mask       |
+| 2020-05-30 | T-Shirt    |
+
+Solution:
+```sql
+select sell_date, count(distinct product) as num_sold, group_concat(distinct product order by product) as products
+from Activities
+group by sell_date
+order by sell_date
+```
+
+Output: 
+| sell_date  | num_sold | products                     |
+|------------|----------|------------------------------|
+| 2020-05-30 | 3        | Basketball,Headphone,T-shirt |
+| 2020-06-01 | 2        | Bible,Pencil                 |
+| 2020-06-02 | 1        | Mask                         |
+
+
+***
+**Question 49. List products ordered in a period.** Write a solution to get the names of products at least 100 units ordered in February 2020 and their count. Return the result table in any order.
+
+Products table:
+| product_id  | product_name          | product_category |
+|-------------|-----------------------|------------------|
+| 1           | Leetcode Solutions    | Book             |
+| 2           | Jewels of Stringology | Book             |
+| 3           | HP                    | Laptop           |
+| 4           | Lenovo                | Laptop           |
+| 5           | Leetcode Kit          | T-shirt          |
+
+
+Orders table:
+| product_id   | order_date   | unit     |
+|--------------|--------------|----------|
+| 1            | 2020-02-05   | 60       |
+| 1            | 2020-02-10   | 70       |
+| 2            | 2020-01-18   | 30       |
+| 2            | 2020-02-11   | 80       |
+| 3            | 2020-02-17   | 2        |
+| 3            | 2020-02-24   | 3        |
+| 4            | 2020-03-01   | 20       |
+| 4            | 2020-03-04   | 30       |
+| 4            | 2020-03-04   | 60       |
+| 5            | 2020-02-25   | 50       |
+| 5            | 2020-02-27   | 50       |
+| 5            | 2020-03-01   | 50       |
+
+Solution:
+```sql
+select p.product_name, sum(o.unit) as unit
+from products p
+left join orders o on p.product_id=o.product_id
+where (select substr(o.order_date,1,7)) = '2020-02' 
+group by p.product_name
+having sum(o.unit) >=100;
+```
+
+Output: 
+| product_name       | unit    |
+|--------------------|---------|
+| Leetcode Solutions | 130     |
+| Leetcode Kit       | 100     |
 
 
 
