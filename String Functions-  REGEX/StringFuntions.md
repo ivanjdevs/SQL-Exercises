@@ -1,4 +1,4 @@
-## SQL Exercises. String functions.Regex 
+## SQL Exercises. String functions.
 
 This file contains a some SQL exercises focusing mainly on string functions. Most of the SQL code was executed in MySQL.
 
@@ -166,7 +166,7 @@ Output:
 
 
 ***
-**Question 49. List products ordered in a period.** Write a solution to get the names of products at least 100 units ordered in February 2020 and their count. Return the result table in any order.
+**Question 43. List products ordered in a period.** Write a solution to get the names of products at least 100 units ordered in February 2020 and their count. Return the result table in any order.
 
 Products table:
 | product_id  | product_name          | product_category |
@@ -209,6 +209,76 @@ Output:
 |--------------------|---------|
 | Leetcode Solutions | 130     |
 | Leetcode Kit       | 100     |
+
+
+***
+**Question 44. Find users with valid e-mails.** Write a solution to find the users who have valid emails. A valid e-mail has a prefix name and a domain where:
+
+- The prefix name is a string that may contain letters (upper or lower case), digits, underscore '_', period '.' and/or dash '-'. The prefix name must start with a letter.
+- The domain name is @leetcode.com
+
+Return the table in any order.
+
+Users table:
+| user_id | name      | mail                    |
+|---------|-----------|-------------------------|
+| 1       | Winston   | winston@leetcode.com    |
+| 2       | Jonathan  | jonathanisgreat         |
+| 3       | Annabelle | bella-@leetcode.com     |
+| 4       | Sally     | sally.come@leetcode.com |
+| 5       | Marwan    | quarz#2020@leetcode.com |
+| 6       | David     | david69@gmail.com       |
+| 7       | Shapiro   | .shapo@leetcode.com     |
+
+Solution
+```sql
+select * from users
+where mail regexp '^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode[.]com$'
+```
+
+Output: 
+| user_id | name      | mail                    |
+|---------|-----------|-------------------------|
+| 1       | Winston   | winston@leetcode.com    |
+| 3       | Annabelle | bella-@leetcode.com     |
+| 4       | Sally     | sally.come@leetcode.com |
+
+Explanation: 
+- The mail of user 2 does not have a domain.
+- The mail of user 5 has the # sign which is not allowed.
+- The mail of user 6 does not have the leetcode domain.
+- The mail of user 7 starts with a period.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
