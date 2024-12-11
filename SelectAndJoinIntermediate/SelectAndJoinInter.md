@@ -4,7 +4,7 @@ This file contains a few solved SQL exercises focusing mainly on Select and Join
 
 ***
 
-**Question 31. The numbers of employees which report to each employee.** For this priblem, we will consider a manager an employee wgo has at leat 1 other employee reporting to them. 
+**Question 31. The numbers of employees which report to each employee.** For this problem, we will consider a manager an employee who has at leat 1 other employee reporting to them. 
 
 Write a solution to report the ids and the names of all managers, the number of employees who report directly to them, and the average age of the reports rounded to the nearest integer.
 Return the result table ordered by employee_id.
