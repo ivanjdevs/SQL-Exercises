@@ -250,6 +250,23 @@ Explanation:
 - The mail of user 7 starts with a period.
 
 
+A detailed explanation of the following regular expression solution:
+
+'^[A-Za-z]+[A-Za-z0-9\_\.\-]*@leetcode.com'
+
+1. ^ means the beginning of the string
+    - This is important because without it, we can have something like: '.shapiro@leetcode.com'
+This is because *part* of the regex matches the pattern perfectly. 
+The part that is 'shapiro@leetcode.com'.
+This is how we may understand it: regex will return the whole thing as long as part of it matches. By adding ^ we are saying: you have to match FROM THE START.
+	
+2. [a-zA-Z0-9_.-] = after that any letter or number or _ or . or -
+3. @leetcode = after that combine with  @leetcode
+4. [.] = must come . after @leetcode
+5. com = then com
+
+
+
 
 
 
